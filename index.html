@@ -132,14 +132,6 @@ footer {
 
     <div class="card">
 
-        <label>Gemini API Key</label>
-        <input
-            type="password"
-            id="apiKey"
-            placeholder="Enter your Gemini API key"
-            autocomplete="off"
-        >
-
         <label>Insurance Category</label>
         <select id="category">
             <option>Health Insurance</option>
@@ -178,9 +170,13 @@ footer {
 
 <script>
 
+// PASTE YOUR GEMINI API KEY BELOW
+const API_KEY = "AQ.Ab8RN6Ivw1PXYcxcSUeJXCV8KMtAHa7g1b2qiAezWibVkxJFCw";
+
+
 async function sendRequest() {
 
-    const apiKey = document.getElementById("apiKey").value.trim();
+    const apiKey = API_KEY;
     const category = document.getElementById("category").value;
     const age = Number(document.getElementById("age").value);
     const coverage = Number(document.getElementById("coverage").value);
@@ -190,8 +186,8 @@ async function sendRequest() {
     const result = document.getElementById("result");
     const button = document.getElementById("submitBtn");
 
-    if (!apiKey) {
-        alert("Please enter your Gemini API key.");
+    if (!apiKey || apiKey === "PASTE_YOUR_GEMINI_API_KEY_HERE") {
+        alert("Please add your Gemini API key inside the code.");
         return;
     }
 
