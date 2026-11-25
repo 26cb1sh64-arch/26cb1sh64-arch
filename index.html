@@ -1,121 +1,356 @@
 
-export default {
-  async fetch(request, env) {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InsureAI | Insurance Assistant</title>
 
-    const allowedOrigin = "https://26cb1sh64-arch.github.io";
-    const origin = request.headers.get("Origin");
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
 
-    const corsHeaders = {
-      "Access-Control-Allow-Origin": allowedOrigin,
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
-      "Content-Type": "application/json"
+body {
+    background: #f4f7fb;
+    color: #182b42;
+}
+
+header {
+    background: #102b46;
+    color: white;
+    padding: 22px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.logo span {
+    color: #42d6a4;
+}
+
+header small {
+    color: #c5d5e5;
+}
+
+.container {
+    max-width: 850px;
+    margin: 55px auto;
+    padding: 20px;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.hero h1 {
+    font-size: 36px;
+    margin-bottom: 12px;
+}
+
+.hero p {
+    color: #748397;
+    line-height: 1.6;
+}
+
+.form-card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 35px rgba(0,0,0,.06);
+}
+
+.form-card h2 {
+    margin-bottom: 8px;
+}
+
+.description {
+    color: #8491a1;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 9px;
+    font-size: 14px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #dce3eb;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+    background: white;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #2378bd;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 110px;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    background: #1264a3;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background: #0d4e82;
+}
+
+.submit-btn:disabled {
+    opacity: .6;
+    cursor: wait;
+}
+
+.status {
+    margin-top: 18px;
+    font-size: 14px;
+    color: #2475ae;
+}
+
+.result {
+    display: none;
+    margin-top: 25px;
+    padding: 22px;
+    background: #f1f8ff;
+    border-left: 4px solid #3286d8;
+    border-radius: 8px;
+}
+
+.result h3 {
+    margin-bottom: 15px;
+}
+
+.result-content {
+    line-height: 1.8;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #8995a3;
+    font-size: 12px;
+}
+
+@media(max-width:600px) {
+    .container {
+        margin: 25px auto;
+    }
+
+    .hero h1 {
+        font-size: 29px;
+    }
+
+    .form-card {
+        padding: 20px;
+    }
+
+    header small {
+        display: none;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">Insure<span>AI</span></div>
+    <small>AI-Powered Insurance Assistant</small>
+</header>
+
+<main class="container">
+
+    <section class="hero">
+        <h1>Smart Insurance Analysis</h1>
+        <p>
+            Enter your insurance requirements and let AI
+            help you understand your coverage needs.
+        </p>
+    </section>
+
+    <section class="form-card">
+
+        <h2>Insurance Information</h2>
+        <p class="description">
+            Provide the following information to generate
+            your personalized insurance analysis.
+        </p>
+
+        <form id="insuranceForm">
+
+            <div class="form-group">
+                <label for="category">Insurance Category</label>
+                <select id="category" required>
+                    <option value="Health Insurance" selected>
+                        Health Insurance
+                    </option>
+                    <option value="Life Insurance">
+                        Life Insurance
+                    </option>
+                    <option value="Vehicle Insurance">
+                        Vehicle Insurance
+                    </option>
+                    <option value="Travel Insurance">
+                        Travel Insurance
+                    </option>
+                    <option value="Other">
+                        Other
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input
+                    type="number"
+                    id="age"
+                    value="25"
+                    min="18"
+                    max="100"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="coverage">
+                    Required Coverage Amount (₹)
+                </label>
+                <input
+                    type="number"
+                    id="coverage"
+                    value="500000"
+                    min="1"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="details">
+                    Additional Information
+                </label>
+                <textarea
+                    id="details"
+                    placeholder="Describe your requirements, preferences or questions..."
+                ></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                Generate Insurance Analysis →
+            </button>
+
+        </form>
+
+        <div class="status" id="status" role="status"></div>
+
+        <div class="result" id="result">
+            <h3>AI Insurance Analysis</h3>
+            <div class="result-content" id="resultContent"></div>
+        </div>
+
+    </section>
+
+</main>
+
+<footer>
+    © 2026 InsureAI | AI-generated information is
+    educational and not professional insurance advice.
+</footer>
+
+<script>
+
+// Replace this with your deployed Vercel API URL.
+const API_URL = "https://YOUR-VERCEL-PROJECT.vercel.app/api/insurance";
+
+const form = document.getElementById("insuranceForm");
+
+form.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    const data = {
+        category: document.getElementById("category").value,
+        age: Number(document.getElementById("age").value),
+        coverage: Number(document.getElementById("coverage").value),
+        details: document.getElementById("details").value.trim()
     };
 
-    if (request.method === "OPTIONS") {
-      return new Response(null, {
-        status: 204,
-        headers: corsHeaders
-      });
-    }
+    const button = document.getElementById("submitBtn");
+    const status = document.getElementById("status");
+    const result = document.getElementById("result");
+    const resultContent = document.getElementById("resultContent");
 
-    if (origin !== allowedOrigin) {
-      return new Response(
-        JSON.stringify({ error: "Origin not allowed" }),
-        { status: 403, headers: corsHeaders }
-      );
-    }
-
-    if (request.method !== "POST") {
-      return new Response(
-        JSON.stringify({ error: "Method not allowed" }),
-        { status: 405, headers: corsHeaders }
-      );
-    }
+    button.disabled = true;
+    button.textContent = "Analyzing...";
+    status.textContent = "Sending information to AI...";
+    result.style.display = "none";
 
     try {
 
-      const { message } = await request.json();
-
-      if (typeof message !== "string" || !message.trim()) {
-        return new Response(
-          JSON.stringify({ error: "A valid message is required" }),
-          { status: 400, headers: corsHeaders }
-        );
-      }
-
-      if (message.length > 5000) {
-        return new Response(
-          JSON.stringify({ error: "Message is too long" }),
-          { status: 400, headers: corsHeaders }
-        );
-      }
-
-      const systemPrompt = `
-        You are InsureAI, an intelligent insurance assistant.
-
-        Your responsibilities:
-        1. Explain insurance concepts in simple language.
-        2. Explain health, life, vehicle and other insurance.
-        3. Explain insurance claims and policy terms.
-        4. Help users understand insurance coverage.
-        5. Never invent policy terms, prices or coverage.
-        6. Clearly explain when information needs verification.
-        7. Never pretend to be a licensed insurance advisor.
-        8. Do not guarantee claim approval or policy benefits.
-
-        Keep responses structured and easy to understand.
-      `;
-
-      const geminiResponse = await fetch(
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-goog-api-key": env.GEMINI_API_KEY
-          },
-          body: JSON.stringify({
-            system_instruction: {
-              parts: [{ text: systemPrompt }]
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
             },
-            contents: [{
-              role: "user",
-              parts: [{ text: message }]
-            }]
-          })
+            body: JSON.stringify(data)
+        });
+
+        const output = await response.json();
+
+        if (!response.ok) {
+            throw new Error(output.error || "API request failed");
         }
-      );
 
-      const result = await geminiResponse.json();
+        resultContent.textContent = output.reply;
+        result.style.display = "block";
+        status.textContent = "Analysis generated successfully.";
 
-      if (!geminiResponse.ok) {
-        return new Response(
-          JSON.stringify({
-            error: "Gemini API request failed",
-            details: result.error?.message || "Unknown API error"
-          }),
-          { status: 502, headers: corsHeaders }
-        );
-      }
+    } catch(error) {
 
-      const reply =
-        result.candidates?.[0]?.content?.parts
-          ?.map(part => part.text || "")
-          .join("") || "No response generated.";
+        status.textContent = "Unable to generate analysis.";
+        resultContent.textContent = error.message;
+        result.style.display = "block";
 
-      return new Response(
-        JSON.stringify({ reply }),
-        { status: 200, headers: corsHeaders }
-      );
+    } finally {
 
-    } catch (error) {
-
-      return new Response(
-        JSON.stringify({ error: "Internal server error" }),
-        { status: 500, headers: corsHeaders }
-      );
+        button.disabled = false;
+        button.textContent = "Generate Insurance Analysis →";
 
     }
-  }
-};
+
+});
+
+</script>
+
+</body>
+</html>
